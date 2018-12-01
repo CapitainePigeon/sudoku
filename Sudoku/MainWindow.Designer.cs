@@ -48,7 +48,11 @@
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Titre = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.grille)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // grille
@@ -57,9 +61,6 @@
             this.grille.AllowUserToDeleteRows = false;
             this.grille.AllowUserToResizeColumns = false;
             this.grille.AllowUserToResizeRows = false;
-            this.grille.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.grille.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grille.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.grille.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
@@ -75,17 +76,21 @@
             this.Column9});
             this.grille.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.grille.GridColor = System.Drawing.SystemColors.AppWorkspace;
-            this.grille.Location = new System.Drawing.Point(167, 81);
+            this.grille.Location = new System.Drawing.Point(196, 20);
             this.grille.MultiSelect = false;
             this.grille.Name = "grille";
             this.grille.RowHeadersVisible = false;
             dataGridViewCellStyle10.Format = "N0";
             dataGridViewCellStyle10.NullValue = null;
             this.grille.RowsDefaultCellStyle = dataGridViewCellStyle10;
+            this.grille.RowTemplate.DividerHeight = 1;
+            this.grille.RowTemplate.Height = 90;
+            this.grille.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.grille.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.grille.Size = new System.Drawing.Size(530, 407);
+            this.grille.Size = new System.Drawing.Size(450, 452);
             this.grille.TabIndex = 0;
             this.grille.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            this.grille.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grille_CellContentClick);
             // 
             // Column1
             // 
@@ -214,18 +219,49 @@
             this.Column9.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Column9.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
+            // Titre
+            // 
+            this.Titre.Dock = System.Windows.Forms.DockStyle.Top;
+            this.Titre.Location = new System.Drawing.Point(0, 0);
+            this.Titre.Name = "Titre";
+            this.Titre.Size = new System.Drawing.Size(746, 20);
+            this.Titre.TabIndex = 1;
+            this.Titre.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(47, 47);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.button1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel1.Location = new System.Drawing.Point(0, 20);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(190, 551);
+            this.panel1.TabIndex = 3;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(746, 571);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.Titre);
             this.Controls.Add(this.grille);
             this.Name = "MainWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sudoku";
             this.Load += new System.EventHandler(this.MainWindow_Load);
             ((System.ComponentModel.ISupportInitialize)(this.grille)).EndInit();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -241,6 +277,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.TextBox Titre;
     }
 }
 
