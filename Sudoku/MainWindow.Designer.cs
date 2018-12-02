@@ -49,7 +49,7 @@
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Titre = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnNouvGrille = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.grille)).BeginInit();
             this.panel1.SuspendLayout();
@@ -63,6 +63,7 @@
             this.grille.AllowUserToResizeRows = false;
             this.grille.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grille.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.grille.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.grille.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.grille.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
@@ -228,18 +229,19 @@
             this.Titre.TabIndex = 1;
             this.Titre.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
-            // button1
+            // btnNouvGrille
             // 
-            this.button1.Location = new System.Drawing.Point(47, 47);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnNouvGrille.Cursor = System.Windows.Forms.Cursors.AppStarting;
+            this.btnNouvGrille.Location = new System.Drawing.Point(23, 462);
+            this.btnNouvGrille.Name = "btnNouvGrille";
+            this.btnNouvGrille.Size = new System.Drawing.Size(108, 32);
+            this.btnNouvGrille.TabIndex = 2;
+            this.btnNouvGrille.Text = "Nouvelle grille";
+            this.btnNouvGrille.UseVisualStyleBackColor = true;
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.button1);
+            this.panel1.Controls.Add(this.btnNouvGrille);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 20);
             this.panel1.Name = "panel1";
@@ -277,7 +279,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnNouvGrille;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TextBox Titre;
     }
