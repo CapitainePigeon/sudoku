@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -76,14 +77,22 @@
             this.Column8,
             this.Column9});
             this.grille.Cursor = System.Windows.Forms.Cursors.IBeam;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.grille.DefaultCellStyle = dataGridViewCellStyle10;
             this.grille.GridColor = System.Drawing.SystemColors.AppWorkspace;
             this.grille.Location = new System.Drawing.Point(196, 20);
             this.grille.MultiSelect = false;
             this.grille.Name = "grille";
             this.grille.RowHeadersVisible = false;
-            dataGridViewCellStyle10.Format = "N0";
-            dataGridViewCellStyle10.NullValue = null;
-            this.grille.RowsDefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle11.Format = "N0";
+            dataGridViewCellStyle11.NullValue = null;
+            this.grille.RowsDefaultCellStyle = dataGridViewCellStyle11;
             this.grille.RowTemplate.DividerHeight = 1;
             this.grille.RowTemplate.Height = 90;
             this.grille.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -231,13 +240,14 @@
             // 
             // btnNouvGrille
             // 
-            this.btnNouvGrille.Cursor = System.Windows.Forms.Cursors.AppStarting;
+            this.btnNouvGrille.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.btnNouvGrille.Location = new System.Drawing.Point(23, 462);
             this.btnNouvGrille.Name = "btnNouvGrille";
             this.btnNouvGrille.Size = new System.Drawing.Size(108, 32);
             this.btnNouvGrille.TabIndex = 2;
             this.btnNouvGrille.Text = "Nouvelle grille";
             this.btnNouvGrille.UseVisualStyleBackColor = true;
+            this.btnNouvGrille.Click += new System.EventHandler(this.btnNouvGrille_Click);
             // 
             // panel1
             // 

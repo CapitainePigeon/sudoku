@@ -42,25 +42,7 @@ namespace Sudoku
             grille.Rows[7].MinimumHeight = (grille.Height - 2) / 9;
             grille.Rows[8].MinimumHeight = (grille.Height - 2) / 9;
             GenererGrille();
-            for (int i = 0; i < 9; i++)
-             {
-                for (int j = 0; j < 9; j++)
-                {
-                    grille.Rows[i].Cells[j].Value = solution[i, j];
-                    
-                }
-                 Console.WriteLine(
-                     solution[i, 0] + "," +
-                     solution[i, 1] + "," +
-                     solution[i, 2] + "," +
-                     solution[i, 3] + "," +
-                     solution[i, 4] + "," +
-                     solution[i, 5] + "," +
-                     solution[i, 6] + "," +
-                     solution[i, 7] + "," +
-                     solution[i, 8] );
-
-             }
+            RemplirGrille();
             
 
         }
@@ -138,7 +120,7 @@ namespace Sudoku
                     ModifY.Add(i);
                 }
 
-                if ((solution[i,y]==0 && Possibilitee[i][y].Count==0 )|| (solution[x, i] == 0&&Possibilitee[x][i].Count == 0))
+                if ((solution[i,y]==0 && Possibilitee[i][y].Count==0 )|| (solution[x, i] == 0 && Possibilitee[x][i].Count == 0))
                 {
                     int annul = 0;
                     while (annul < ModifX.Count)
@@ -270,6 +252,29 @@ namespace Sudoku
             return 1;
         }
 
+        private void RemplirGrille()
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    grille.Rows[i].Cells[j].Value = solution[i, j];
+
+                }
+                Console.WriteLine(
+                    solution[i, 0] + "," +
+                    solution[i, 1] + "," +
+                    solution[i, 2] + "," +
+                    solution[i, 3] + "," +
+                    solution[i, 4] + "," +
+                    solution[i, 5] + "," +
+                    solution[i, 6] + "," +
+                    solution[i, 7] + "," +
+                    solution[i, 8]);
+
+            }
+        }
+
         private void grille_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
@@ -278,6 +283,12 @@ namespace Sudoku
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnNouvGrille_Click(object sender, EventArgs e)
+        {
+            GenererGrille();
+            RemplirGrille();
         }
     }
 }
