@@ -106,43 +106,13 @@ namespace Sudoku
         {
             //Console.WriteLine(caseLibre + " x " + x + "  y " + y + "  valeur " + valeur);
             solution[x, y] = valeur;
-            int i2;
-           /* for (i2 = 0; i2 < 9; i2++)
-            {
-                Console.WriteLine(
-                    solution[i2, 0] + "," +
-                    solution[i2, 1] + "," +
-                    solution[i2, 2] + "," +
-                    solution[i2, 3] + "," +
-                    solution[i2, 4] + "," +
-                    solution[i2, 5] + "," +
-                    solution[i2, 6] + "," +
-                    solution[i2, 7] + "," +
-                    solution[i2, 8]);
-            }
-            Console.WriteLine("debu"+x + "  " + y + "   " + valeur+ "  caseLibre "+ caseLibre);*/
+          
             List<int> ModifX = new List<int> ();
             List<int> ModifY = new List<int> ();
             List<int> ModifValeur = new List<int>();
             
             if (caseLibre == 1)
             {
-                
-                /*for ( i2 = 0; i2 < 9; i2++)
-                {
-                    Console.WriteLine(
-                        solution[i2, 0] + "," +
-                        solution[i2, 1] + "," +
-                        solution[i2, 2] + "," +
-                        solution[i2, 3] + "," +
-                        solution[i2, 4] + "," +
-                        solution[i2, 5] + "," +
-                        solution[i2, 6] + "," +
-                        solution[i2, 7] + "," +
-                        solution[i2, 8]);
-
-                }
-                Console.WriteLine(x+"  "+y+"   "+valeur);*/
                 return 1;
             }
             int i,j;
@@ -172,29 +142,6 @@ namespace Sudoku
                         annul = annul + 1;
                     }
                     
-                   /* for ( i2 = 0; i2 < 9; i2++)
-                    {
-                        Console.WriteLine(
-                            solution[i2, 0] + "," +
-                            solution[i2, 1] + "," +
-                            solution[i2, 2] + "," +
-                            solution[i2, 3] + "," +
-                            solution[i2, 4] + "," +
-                            solution[i2, 5] + "," +
-                            solution[i2, 6] + "," +
-                            solution[i2, 7] + "," +
-                            solution[i2, 8]);
-
-                    }
-                    i2 = 0;
-                    while (i2 < Possibilitee[x][y].Count)
-                    {
-                        Console.WriteLine(Possibilitee[x][y][i2]);
-                        i2 = i2 + 1;
-                    }
-                    Console.WriteLine(caseLibre + " x " + x + "  y " + y +"  i "+i + "  valeur " + valeur);
-                    Console.WriteLine(caseLibre + "LOLO "   + "  Possibilitee[x][y].Count " + Possibilitee[x][y].Count + "\n");
-                    */
                     solution[x, y] = 0;
                     return -1;
                 }
@@ -226,7 +173,36 @@ namespace Sudoku
             }
 
             int nouvX, nouvY;
+            //ICI
+            for (nouvX = 0; nouvX < 9; nouvX++)
+            {
+                for (nouvY = 0; nouvY < 9; nouvY++)
+                {
+                    if(solution[nouvX,nouvY]==0 && Possibilitee[nouvX][nouvY].Count == 1)
+                    {
+                        if (TesterCase(nouvX, nouvY, Possibilitee[nouvX][nouvY][0], caseLibre - 1) == -1)
+                        {
+                            int annul = 0;
+                            while (annul < ModifX.Count)
+                            {
+                                Possibilitee[ModifX[annul]][ModifY[annul]].Add(ModifValeur[annul]);
+                                annul = annul + 1;
+                            }
+                            solution[x, y] = 0;
+                            return -1;
+                        }
+                        else
+                        {
+                            return 1;
+                        }
+                    }
+                }
+            }
 
+
+
+
+            //jusqu'a ici
             nouvX = rnd.Next(0, 9);
             nouvY = rnd.Next(0, 9);
             
@@ -236,51 +212,7 @@ namespace Sudoku
                 nouvY = rnd.Next(0, 9);
             }
             int nouvValeur = Possibilitee[nouvX][nouvY][rnd.Next(0, Possibilitee[nouvX][nouvY].Count)];
-           /* Possibilitee[nouvX][nouvY].Remove(nouvValeur);
-            ModifX.Add(nouvX);
-            ModifY.Add(nouvY);
-            ModifValeur.Add(nouvValeur);
-            
-
-            /*if (Possibilitee[nouvX][nouvY].Count == 0 && TesterCase(nouvX, nouvY, nouvValeur, caseLibre - 1) == -1)
-            {
-                //Console.WriteLine("LALAL nouvX " + nouvX + "  nouvY " + nouvY + "  nouvValeur " + nouvValeur);
-                int annul = 0;
-                while (annul < ModifX.Count)
-                {
-                    Possibilitee[ModifX[annul]][ModifY[annul]].Add(ModifValeur[annul]);
-                    annul = annul + 1;
-                }
-                
-                for (i2 = 0; i2 < 9; i2++)
-                {
-                    Console.WriteLine(
-                        solution[i2, 0] + "," +
-                        solution[i2, 1] + "," +
-                        solution[i2, 2] + "," +
-                        solution[i2, 3] + "," +
-                        solution[i2, 4] + "," +
-                        solution[i2, 5] + "," +
-                        solution[i2, 6] + "," +
-                        solution[i2, 7] + "," +
-                        solution[i2, 8]);
-
-                }
-                i2 = 0;
-                while (i2 < Possibilitee[x][y].Count)
-                {
-                    Console.WriteLine(Possibilitee[x][y][i2]);
-                    i2 = i2 + 1;
-                }
-                Console.WriteLine(caseLibre + " x " + x + "  y " + y  + "  valeur " + valeur);
-                Console.WriteLine(caseLibre + "LILI nouvX " + nouvX + "  nouvY " + nouvY + "  nouvValeur " + nouvValeur + "  Possibilitee[nouvX][nouvY].Count " + Possibilitee[nouvX][nouvY].Count);
-                Console.WriteLine(caseLibre + "LOLO " + "  Possibilitee[x][y].Count " + Possibilitee[x][y].Count + "\n");
-                
-
-            
-                solution[x, y] = 0;
-                return -1;
-            }*/
+         
             while (TesterCase(nouvX, nouvY, nouvValeur, caseLibre - 1)==-1)
             {
                // Console.WriteLine(caseLibre + "LILI nouvX " + nouvX + "  nouvY " + nouvY + "  nouvValeur "+ nouvValeur + "  Possibilitee[nouvX][nouvY].Count " + Possibilitee[nouvX][nouvY].Count);
@@ -329,7 +261,7 @@ namespace Sudoku
                 }
                 nouvValeur = Possibilitee[nouvX][nouvY][rnd.Next(0, Possibilitee[nouvX][nouvY].Count)];
             }
-            Console.WriteLine("retunr 1   "+caseLibre+"  "+valeur );
+            //Console.WriteLine("retunr 1   "+caseLibre+"  "+valeur );
             return 1;
         }
 
