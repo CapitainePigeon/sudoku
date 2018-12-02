@@ -44,6 +44,11 @@ namespace Sudoku
             GenererGrille();
             for (int i = 0; i < 9; i++)
              {
+                for (int j = 0; j < 9; j++)
+                {
+                    grille.Rows[i].Cells[j].Value = solution[i, j];
+                    
+                }
                  Console.WriteLine(
                      solution[i, 0] + "," +
                      solution[i, 1] + "," +
