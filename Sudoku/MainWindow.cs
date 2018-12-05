@@ -42,28 +42,8 @@ namespace Sudoku
             grille.Rows[7].MinimumHeight = (grille.Height - 2) / 9;
             grille.Rows[8].MinimumHeight = (grille.Height - 2) / 9;
             GenererGrille();
-            FaireDesTrous();
-            for (int i = 0; i < 9; i++)
-             {
-                for (int j = 0; j < 9; j++)
-                {
-                    grille.Rows[i].Cells[j].Value = grilleATrou[i, j];
-                    
-                }
-                 Console.WriteLine(
-                     solution[i, 0] + "," +
-                     solution[i, 1] + "," +
-                     solution[i, 2] + "," +
-                     solution[i, 3] + "," +
-                     solution[i, 4] + "," +
-                     solution[i, 5] + "," +
-                     solution[i, 6] + "," +
-                     solution[i, 7] + "," +
-                     solution[i, 8] );
-
-             }
+            RemplirGrille(GenererGrilleTrou());
             
-
         }
         private void GenererGrille()
         {
@@ -234,10 +214,10 @@ namespace Sudoku
             }
         }
 
-        int[,] grilleATrou;
-        private void FaireDesTrous()
+
+        private int[,] GenererGrilleTrou()
         {
-            grilleATrou= new int[9,9];
+            int[,] grilleATrou= new int[9,9];
             int x, y;
             for (x = 0 ; x < 9 ; x++)
             {
@@ -272,6 +252,55 @@ namespace Sudoku
                 }
                 
             }
+
+            return grilleATrou;
+        }
+
+
+        private void RemplirGrille()
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    grille.Rows[i].Cells[j].Value = solution[i, j];
+
+                }
+                Console.WriteLine(
+                    solution[i, 0] + "," +
+                    solution[i, 1] + "," +
+                    solution[i, 2] + "," +
+                    solution[i, 3] + "," +
+                    solution[i, 4] + "," +
+                    solution[i, 5] + "," +
+                    solution[i, 6] + "," +
+                    solution[i, 7] + "," +
+                    solution[i, 8]);
+
+            }
+        }
+
+        private void RemplirGrille( int[,] grilleTrou)
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    grille.Rows[i].Cells[j].Value = grilleTrou[i, j];
+
+                }
+                Console.WriteLine(
+                    solution[i, 0] + "," +
+                    solution[i, 1] + "," +
+                    solution[i, 2] + "," +
+                    solution[i, 3] + "," +
+                    solution[i, 4] + "," +
+                    solution[i, 5] + "," +
+                    solution[i, 6] + "," +
+                    solution[i, 7] + "," +
+                    solution[i, 8]);
+
+            }
         }
 
         private bool CaseNecessaire(int x, int y, int[,]grilleATrou,int dificulte)
@@ -298,6 +327,7 @@ namespace Sudoku
             return (EnsPossib.Count == 1);
 
         }
+
         private void grille_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
@@ -306,6 +336,12 @@ namespace Sudoku
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnNouvGrille_Click(object sender, EventArgs e)
+        {
+            GenererGrille();
+            RemplirGrille(GenererGrilleTrou());
         }
     }
 }
