@@ -42,9 +42,8 @@ namespace Sudoku
             grille.Rows[7].MinimumHeight = (grille.Height - 2) / 9;
             grille.Rows[8].MinimumHeight = (grille.Height - 2) / 9;
             GenererGrille();
-            RemplirGrille();
+            RemplirGrille(GenererGrilleTrou());
             
-
         }
         private void GenererGrille()
         {
@@ -87,9 +86,9 @@ namespace Sudoku
             rnd = new Random();
             int val = rnd.Next(1, 9);
             Possibilitee[0][0].Remove(val);
-            TesterCase(0,0, val, 81);
+            RemplirCase(0,0, val, 81);
         }
-        private int TesterCase(int x,int y,int valeur,int caseLibre)
+        private int RemplirCase(int x,int y,int valeur,int caseLibre)
         {
             //Console.WriteLine(caseLibre + " x " + x + "  y " + y + "  valeur " + valeur);
             solution[x, y] = valeur;
@@ -105,8 +104,6 @@ namespace Sudoku
             int i,j;
             for (i = 0; i < 9; i++)
             {
-                //la valeur n'est plus disponible ni sur la ligne, ni sur la colone
-
                 if (Possibilitee[i][y].Remove(valeur))
                 {
                     ModifX.Add(i);
@@ -122,13 +119,7 @@ namespace Sudoku
 
                 if ((solution[i,y]==0 && Possibilitee[i][y].Count==0 )|| (solution[x, i] == 0 && Possibilitee[x][i].Count == 0))
                 {
-                    int annul = 0;
-                    while (annul < ModifX.Count)
-                    {
-                        Possibilitee[ModifX[annul]][ModifY[annul]].Add(ModifValeur[annul]);
-                        annul = annul + 1;
-                    }
-                    
+                    annulation(ModifX, ModifY, ModifValeur);
                     solution[x, y] = 0;
                     return -1;
                 }
@@ -146,12 +137,7 @@ namespace Sudoku
                     }
                     if(solution[(3 * (x / 3) + i % 3),(3 * (y / 3) + j % 3)] == 0 && Possibilitee[3 * (x / 3) + i % 3][3 * (y / 3) + j % 3].Count == 0)
                     {
-                        int annul = 0;
-                        while (annul < ModifX.Count)
-                        {
-                            Possibilitee[ModifX[annul]][ModifY[annul]].Add(ModifValeur[annul]);
-                            annul = annul + 1;
-                        }
+                        annulation(ModifX, ModifY, ModifValeur);
                         solution[x, y] = 0;
                         return -1;
                     }
@@ -167,14 +153,9 @@ namespace Sudoku
                 {
                     if(solution[nouvX,nouvY]==0 && Possibilitee[nouvX][nouvY].Count == 1)
                     {
-                        if (TesterCase(nouvX, nouvY, Possibilitee[nouvX][nouvY][0], caseLibre - 1) == -1)
+                        if (RemplirCase(nouvX, nouvY, Possibilitee[nouvX][nouvY][0], caseLibre - 1) == -1)
                         {
-                            int annul = 0;
-                            while (annul < ModifX.Count)
-                            {
-                                Possibilitee[ModifX[annul]][ModifY[annul]].Add(ModifValeur[annul]);
-                                annul = annul + 1;
-                            }
+                            annulation(ModifX, ModifY, ModifValeur);
                             solution[x, y] = 0;
                             return -1;
                         }
@@ -200,7 +181,7 @@ namespace Sudoku
             }
             int nouvValeur = Possibilitee[nouvX][nouvY][rnd.Next(0, Possibilitee[nouvX][nouvY].Count)];
          
-            while (TesterCase(nouvX, nouvY, nouvValeur, caseLibre - 1)==-1)
+            while (RemplirCase(nouvX, nouvY, nouvValeur, caseLibre - 1)==-1)
             {
                // Console.WriteLine(caseLibre + "LILI nouvX " + nouvX + "  nouvY " + nouvY + "  nouvValeur "+ nouvValeur + "  Possibilitee[nouvX][nouvY].Count " + Possibilitee[nouvX][nouvY].Count);
                 
@@ -214,36 +195,8 @@ namespace Sudoku
                 if (Possibilitee[nouvX][nouvY].Count == 0)
                 {
                     //Console.WriteLine("LALAL nouvX " + nouvX + "  nouvY " + nouvY + "  nouvValeur " + nouvValeur);
-                    int annul = 0;
-                    while (annul < ModifX.Count)
-                    {
-                        Possibilitee[ModifX[annul]][ModifY[annul]].Add(ModifValeur[annul]);
-                        annul = annul + 1;
-                    }
-
-                   /* for (i = 0; i < 9; i++)
-                    {
-                        Console.WriteLine(
-                            solution[i, 0] + "," +
-                            solution[i, 1] + "," +
-                            solution[i, 2] + "," +
-                            solution[i, 3] + "," +
-                            solution[i, 4] + "," +
-                            solution[i, 5] + "," +
-                            solution[i, 6] + "," +
-                            solution[i, 7] + "," +
-                            solution[i, 8]);
-
-                    }
-                    i = 0;
-                    while (i < Possibilitee[x][y].Count)
-                    {
-                        Console.WriteLine(Possibilitee[x][y][i]);
-                        i = i + 1;
-                    }
-                    Console.WriteLine(caseLibre + " x " + x + "  y " + y + "  valeur " + valeur);
-                    Console.WriteLine(caseLibre + "LOLO nouvX " + nouvX + "  nouvY " + nouvY + "  nouvValeur " + nouvValeur + "  Possibilitee[nouvX][nouvY].Count " + Possibilitee[nouvX][nouvY].Count + "\n");
-                    */solution[x, y] = 0;
+                    annulation(ModifX,ModifY,ModifValeur);
+                    solution[x, y] = 0;
                     return -1;
                 }
                 nouvValeur = Possibilitee[nouvX][nouvY][rnd.Next(0, Possibilitee[nouvX][nouvY].Count)];
@@ -251,6 +204,58 @@ namespace Sudoku
             //Console.WriteLine("retunr 1   "+caseLibre+"  "+valeur );
             return 1;
         }
+        private void annulation(List<int> ModifX, List<int> ModifY, List<int> ModifValeur)
+        {
+            int annul = 0;
+            while (annul < ModifX.Count)
+            {
+                Possibilitee[ModifX[annul]][ModifY[annul]].Add(ModifValeur[annul]);
+                annul = annul + 1;
+            }
+        }
+
+
+        private int[,] GenererGrilleTrou()
+        {
+            int[,] grilleATrou= new int[9,9];
+            int x, y;
+            for (x = 0 ; x < 9 ; x++)
+            {
+                for (y = 0; y < 9; y++)
+                {
+                    grilleATrou[x, y] = solution[x, y];
+                }
+            }
+            int [,]grilleNecessaire= new int[9, 9] {
+                {0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0},
+                {0,0,0,0,0,0,0,0,0}};
+            int caseNonNecessaire = 81;
+            while (caseNonNecessaire > 0)
+            {
+                x = rnd.Next(0, 9);
+                y = rnd.Next(0, 9);
+                if (grilleNecessaire[x, y] == 0)
+                {
+                    if (!CaseNecessaire(x,y,grilleATrou,0))
+                    {
+                        grilleATrou[x, y] = 0;
+                    }
+                    grilleNecessaire[x, y] = 1;
+                    caseNonNecessaire--;
+                }
+                
+            }
+
+            return grilleATrou;
+        }
+
 
         private void RemplirGrille()
         {
@@ -275,6 +280,54 @@ namespace Sudoku
             }
         }
 
+        private void RemplirGrille( int[,] grilleTrou)
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                for (int j = 0; j < 9; j++)
+                {
+                    grille.Rows[i].Cells[j].Value = grilleTrou[i, j];
+
+                }
+                Console.WriteLine(
+                    solution[i, 0] + "," +
+                    solution[i, 1] + "," +
+                    solution[i, 2] + "," +
+                    solution[i, 3] + "," +
+                    solution[i, 4] + "," +
+                    solution[i, 5] + "," +
+                    solution[i, 6] + "," +
+                    solution[i, 7] + "," +
+                    solution[i, 8]);
+
+            }
+        }
+
+        private bool CaseNecessaire(int x, int y, int[,]grilleATrou,int dificulte)
+        {
+            return !SeulValeurPossibleSurCase(x,y,grilleATrou);
+        }
+        private bool SeulValeurPossibleSurCase(int x, int y, int[,] grilleATrou)
+        {
+            int save = grilleATrou[x,y];
+            grilleATrou[x,y] = 0;
+            List<int> EnsPossib = new List<int>();
+            int i;
+            for (i = 0; i <= 9; i++)
+            {
+                EnsPossib.Add(i);
+            }
+            for(i = 0; i < 9; i++)
+            {
+                EnsPossib.Remove(grilleATrou[i,y]);
+                EnsPossib.Remove(grilleATrou[x,i]);
+            }
+
+            grilleATrou[x,y] = save;
+            return (EnsPossib.Count == 1);
+
+        }
+
         private void grille_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
@@ -288,7 +341,7 @@ namespace Sudoku
         private void btnNouvGrille_Click(object sender, EventArgs e)
         {
             GenererGrille();
-            RemplirGrille();
+            RemplirGrille(GenererGrilleTrou());
         }
     }
 }
