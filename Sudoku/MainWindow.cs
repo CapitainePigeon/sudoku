@@ -99,6 +99,10 @@ namespace Sudoku
         }
         private int RemplirCase(int x,int y,int valeur,int caseLibre, int[,] solution, List<List<List<int>>> Possibilitee)
         {
+            // fonction recusive qui a pour but de remplir la grille (solution) passé en parametre en commencent par la valeur valeur a la case de coordoné x,y
+            // retourne 1 en cas de succes et -1 en cas d'echec
+            // le parametre Possibilitee doit etre initialisé par rapport a grille solution passé en parametre avant l'appel de la fonction
+            // Possibilitee contient pour chaque case l'ensemble des valeur sont valide c'est à dire qui ne sont ni dans le carré ni dans la colone ni dans la ligne
             //Console.WriteLine(caseLibre + " x " + x + "  y " + y + "  valeur " + valeur);
             solution[x, y] = valeur;
           
@@ -106,27 +110,27 @@ namespace Sudoku
             List<int> ModifY = new List<int> ();
             List<int> ModifValeur = new List<int>();
             
-            if (caseLibre == 1)
+            if (caseLibre <= 1) // si la grille est pleine on retourne 1
             {
                 return 1;
             }
             int i,j;
-            for (i = 0; i < 9; i++)
+            for (i = 0; i < 9; i++) // on met a jour Possibilitee
             {
-                if (Possibilitee[i][y].Remove(valeur))
+                if (Possibilitee[i][y].Remove(valeur)) //colone
                 {
                     ModifX.Add(i);
                     ModifY.Add(y);
                     ModifValeur.Add(valeur);
                 }
-                if(Possibilitee[x][i].Remove(valeur))
+                if(Possibilitee[x][i].Remove(valeur)) //ligne
                 {
                     ModifX.Add(x);
                     ModifValeur.Add(valeur);
                     ModifY.Add(i);
                 }
 
-                if ((solution[i,y]==0 && Possibilitee[i][y].Count==0 )|| (solution[x, i] == 0 && Possibilitee[x][i].Count == 0))
+                if ((solution[i,y]==0 && Possibilitee[i][y].Count==0 )|| (solution[x, i] == 0 && Possibilitee[x][i].Count == 0)) // dans le cas ou rien ne vas sur une case c'est que la grille ne peut pas etre rempli
                 {
                     annulation(ModifX, ModifY, ModifValeur, Possibilitee);
                     solution[x, y] = 0;
@@ -137,7 +141,7 @@ namespace Sudoku
             {
                 for (j = 0; j < 3; j++)
                 {
-                    // ni sur le caré
+                    // caré
                     if(Possibilitee[3 * (x / 3) + i % 3][3 * (y / 3) + j % 3].Remove(valeur))
                     {
                         ModifX.Add(3 * (x / 3) + i % 3);
@@ -156,6 +160,8 @@ namespace Sudoku
 
             int nouvX, nouvY;
             //ICI
+            // de "ICI" jusqu'a "jusqu'a" ici le code est "facultatif" il pertmet de diminuer le temps de reponse en realisant un lien direct entre l'echec de ce niveau de la recursivité et le niveau suivant
+            
            // Console.WriteLine("ICI "+caseLibre);
             int[,] ligne = new int[9, 9];
             int[,] carre = new int[9, 9];
@@ -168,7 +174,7 @@ namespace Sudoku
                     ligne[nouvX, nouvY] = 0;
                     carre[nouvX, nouvY] = 0;
                     colone[nouvX, nouvY] = 0;
-                    if (solution[nouvX,nouvY]==0 && Possibilitee[nouvX][nouvY].Count == 1)
+                    if (solution[nouvX,nouvY]==0 && Possibilitee[nouvX][nouvY].Count == 1) // dans le cas ou sur une des cases il n'y a qu'une valeur possible
                     {
                         if (RemplirCase(nouvX, nouvY, Possibilitee[nouvX][nouvY][0], caseLibre - 1, solution, Possibilitee) == -1)
                         {
@@ -190,14 +196,14 @@ namespace Sudoku
                 {
                     if (solution[nouvX, nouvY] == 0)
                     {
-                        foreach (int p in Possibilitee[nouvX][nouvY]){
+                        foreach (int p in Possibilitee[nouvX][nouvY]){ 
                             ligne[nouvX, p-1] = ligne[nouvX, p-1] + 1;
                             colone[nouvY, p-1] = colone[nouvY, p-1] + 1;
                             carre[(nouvX/3)*3+ (nouvY / 3), p-1] = carre[(nouvX / 3) * 3 + (nouvY / 3), p-1] + 1;
                         }
                     }
                 }
-            }
+            } // ou dans le cas ou sur une ligne, un carré, ou une colone une valeur ne peut aller qu'a un seul endroit
             for (i = 0; i < 9; i++)
             {
                 for (int nb = 0; nb < 9; nb++)
@@ -207,7 +213,7 @@ namespace Sudoku
                             if (solution[i , j] == 0 && Possibilitee[i][j].Contains(nb + 1))
                             {
                                
-                                if (RemplirCase(i, j, nb + 1, caseLibre - 1, solution, Possibilitee) == -1)
+                                if (RemplirCase(i, j, nb + 1, caseLibre - 1, solution, Possibilitee) == -1)  // on y met le nombre, et si le nombre marche c'est que notre nombre marche et inversement
                                 {
                                     annulation(ModifX, ModifY, ModifValeur, Possibilitee);
                                     solution[x, y] = 0;
@@ -218,8 +224,8 @@ namespace Sudoku
                                     return 1;
                             }
                         }
-                        //return RemplirCase(i, j, nb+1, caseLibre - 1, solution, Possibilitee); // on y met le nombre
-                    if (colone[i, nb] == 1)
+                         
+                    if (colone[i, nb] == 1) 
                         for (j = 0; j < 9; j++)
                             if (solution[j, i] == 0 && Possibilitee[j][i].Contains(nb))
                                 if (RemplirCase(j, i, nb, caseLibre - 1, solution, Possibilitee) == -1)
@@ -248,8 +254,9 @@ namespace Sudoku
             }
 
 
-            //jusqu'a ici
-            Console.WriteLine("jusqu'a ici");
+            //jusqu'a ICI
+            // dans le cas ou on a pas de lien direct entre le succes de cette valeur dans cette case et d'une autre valeur dans une autre case
+            // on prend une autre case libre et on test toutes les valeur qui peuvent aller dedans si une dans elle marche alors notre valeur marche sinon notre valeur ne marche pas
             nouvX = rnd.Next(0, 9);
             nouvY = rnd.Next(0, 9);
             
@@ -262,15 +269,12 @@ namespace Sudoku
          
             while (RemplirCase(nouvX, nouvY, nouvValeur, caseLibre - 1, solution, Possibilitee) ==-1)
             {
-               // Console.WriteLine(caseLibre + "LILI nouvX " + nouvX + "  nouvY " + nouvY + "  nouvValeur "+ nouvValeur + "  Possibilitee[nouvX][nouvY].Count " + Possibilitee[nouvX][nouvY].Count);
-                
+              
                 Possibilitee[nouvX][nouvY].Remove(nouvValeur);
                 ModifX.Add(nouvX);
                 ModifY.Add(nouvY);
                 ModifValeur.Add(nouvValeur);
                 
-                //Console.WriteLine("nouvX "+ nouvX+ "  nouvY "+ nouvY+ "  nouvValeur "+ nouvValeur+ "  Possibilitee[nouvX][nouvY].Count "+ Possibilitee[nouvX][nouvY].Count);
-                //Console.WriteLine("count ModifX " + ModifX.Count + "  ModifY " + ModifY.Count + "  ModifValeur " + ModifValeur.Count);
                 if (Possibilitee[nouvX][nouvY].Count == 0)
                 {
                     //Console.WriteLine("LALAL nouvX " + nouvX + "  nouvY " + nouvY + "  nouvValeur " + nouvValeur);
@@ -280,27 +284,12 @@ namespace Sudoku
                 }
                 nouvValeur = Possibilitee[nouvX][nouvY][rnd.Next(0, Possibilitee[nouvX][nouvY].Count)];
             }
-            //Console.WriteLine("retunr 1   "+caseLibre+"  "+valeur );
-       /*     for ( i = 0; i < 9; i++)
-            {
-                
-                Console.WriteLine(
-                    solution[i, 0] + "," +
-                    solution[i, 1] + "," +
-                    solution[i, 2] + "," +
-                    solution[i, 3] + "," +
-                    solution[i, 4] + "," +
-                    solution[i, 5] + "," +
-                    solution[i, 6] + "," +
-                    solution[i, 7] + "," +
-                    solution[i, 8]);
 
-            }
-            Console.WriteLine("\n");*/
             return 1;
         }
         private void annulation(List<int> ModifX, List<int> ModifY, List<int> ModifValeur, List<List<List<int>>> Possibilitee)
         {
+            // permet d'annuler les modification aporté a Possibilitee quand une case que l'on a testé n'a pas marché
             int annul = 0;
             while (annul < ModifX.Count)
             {
@@ -348,46 +337,7 @@ namespace Sudoku
 
             }
             
-          /*  grilleNecessaire = new int[9, 9] {
-                {0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0}};
-            caseNonNecessaire = 81;
-            for (int i = 0; i < 9; i++) //carré
-            {
-                for (int j = 0; j < 9; j++)
-                {
-                    if (grilleATrou[i, j] == 0)
-                    {
-                        caseNonNecessaire--;
-                        grilleNecessaire[i, j] = 1;
-                    }
-                }
-            }*/
-         /*   while (caseNonNecessaire > difficulte)
-            {
-                Console.WriteLine("lili");
-                x = rnd.Next(0, 9);
-                y = rnd.Next(0, 9);
-                if (grilleNecessaire[x, y] == 0)
-                {
-                    if (grilleATrou[x,y]!=0 && CaseNecessaire(x, y, grilleATrou))
-                    {
-                        grilleATrou[x, y] = 0;
-                    }
-                    grilleNecessaire[x, y] = 1;
-                    
-                    caseNonNecessaire--;
-                }
-
-            }*/
-
+         
             return grilleATrou;
         }
 
@@ -436,7 +386,8 @@ namespace Sudoku
             //return (RienDAutreNeVaSurLaCase(x, y, grilleATrou) || ValeurNeVaNulPartAilleur(x, y, grilleATrou) || LesAutresHypothèsesNeMarchePas(x, y, grilleATrou));
 
             return (RienDAutreNeVaSurLaCase(x, y, grilleATrou) || LesAutresHypothèsesNeMarchePas(x, y, grilleATrou));
-          
+
+
         }
         private bool RienDAutreNeVaSurLaCase(int x, int y, int[,] grilleATrou)
         {
@@ -467,31 +418,7 @@ namespace Sudoku
             return (EnsPossib.Count == 1);
 
         }
-
-        private bool ValeurNeVaNulPartAilleur(int x, int y, int[,] grilleATrou)
-        {
-            Console.WriteLine("ValeurNeVaNulPartAilleur");
-            int EmplacementLibreSurCarre = 9;
-            int EmplacementLibreSurLigne = 9;
-            int EmplacementLibreSurColone = 9;
-            for (int i = 0; i < 9; i++)
-            {
-                if (grilleATrou[x, i] == grilleATrou[x, y])
-                    EmplacementLibreSurLigne = EmplacementLibreSurLigne - 1;
-                if (grilleATrou[i, y] == grilleATrou[x, y])
-                    EmplacementLibreSurColone = EmplacementLibreSurColone - 1;
-
-            }
-            for (int i = 0; i < 3; i++) //carré
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    if (grilleATrou[3 * (x / 3) + i % 3, 3 * (y / 3) + j % 3] == grilleATrou[x, y])
-                        EmplacementLibreSurCarre = EmplacementLibreSurCarre - 1;
-                }
-            }
-            return (EmplacementLibreSurCarre==0 || EmplacementLibreSurLigne ==0 || EmplacementLibreSurColone == 0);
-        }
+        
 
         private void initPossibilitee(List<List<List<int>>> Possibilitee, int[,] grilleATrou)
         {
@@ -540,23 +467,7 @@ namespace Sudoku
                     
                 }
             }
-            Console.WriteLine("coucou");
-            for (int i = 0; i < 9; i++)
-            {
-
-                Console.WriteLine(
-                    grilleATrou[i, 0] + "," +
-                    grilleATrou[i, 1] + "," +
-                    grilleATrou[i, 2] + "," +
-                    grilleATrou[i, 3] + "," +
-                    grilleATrou[i, 4] + "," +
-                    grilleATrou[i, 5] + "," +
-                    grilleATrou[i, 6] + "," +
-                    grilleATrou[i, 7] + "," +
-                    grilleATrou[i, 8]);
-
-            }
-            Console.WriteLine("\n");
+            
         }
 
         private bool LesAutresHypothèsesNeMarchePas(int x, int y, int[,] grilleATrou)
